@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/media/wjr/My Passport/学习资料/rm/寒假/寒假任务/ftpd/build",
+  "command": "/usr/bin/c++  -isystem /usr/include/opencv4 -g -o CMakeFiles/tomato.dir/main.cpp.o -c \"/media/wjr/My Passport/学习资料/rm/寒假/寒假任务/ftpd/main.cpp\"",
+  "file": "/media/wjr/My Passport/学习资料/rm/寒假/寒假任务/ftpd/main.cpp"
+}
+]

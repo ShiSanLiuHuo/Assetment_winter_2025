@@ -6,10 +6,15 @@
 
 #include "communicate/protocol.hpp"
 
-Uplink::Uplink() : owned_ctx_{new IoContext(2)}, {
+Uplink::Uplink() : owned_ctx_{new IoContext(2)} {
   this->debug_ = this->declare_parameter("debug", false);
   InitPublisher();
 }
+
+Uplink::~Uplink(){
+  delete owned_ctx_;
+  owned_ctx_ = nullptr;
+};
 
 void Uplink::Init() {
   // 初始化对象，消息缓冲区置零
@@ -39,13 +44,13 @@ void Uplink::Recv() {
   } catch (const std::exception &e) {
     std::cout << "!!!!!!!!消息接收失败!!!!!!!!" << std::endl;
     std::cout << e.what() << std::endl;
-    exit(-3);
+    return;
   }
 
   if (datarecv.start != 's' || datarecv.end != 'e' || datarecv.type < 0xB0 ||
       datarecv.type > 0xB6) {
     std::cout << "!!!!!!!!数据包校验失败!!!!!!!!" << std::endl;
-    exit(-1);
+    return;
   } else {
     datarecv.type -= 0xB0;
     PublishFunc[datarecv.type](datarecv.buffer);

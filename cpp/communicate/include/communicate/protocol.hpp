@@ -6,9 +6,9 @@
 #include <vector>
 
 #define BYTE1(x) (((x) >> 0) & 0xFF)
-#define BYTE2(x) (((x) >>) & 0xFF)
-#define BYTE3(x) (((x) >>) & 0xFF)
-#define BYTE4(x) (((x) >>) & 0xFF)
+#define BYTE2(x) (((x) >> 8) & 0xFF)
+#define BYTE3(x) (((x) >> 16) & 0xFF)
+#define BYTE4(x) (((x) >> 24) & 0xFF)
 
 #pragma pack(1)
 typedef struct Protocol_s {
@@ -40,6 +40,9 @@ typedef struct Protocol_s {
 #pragma pack()
 
 inline Message fromVector(const std::vector<uint8_t> &data) {
+  if(data.size() != sizeof(Message)){
+    throw std::invalid_argument("Data size not match Message size");
+  }
   Message packet;
   std::copy(data.begin(), data.end(), reinterpret_cast<uint8_t *>(&packet));
   return packet;
@@ -79,19 +82,19 @@ typedef struct InteractionControl_s // 比赛交互控制发送数据
   int content; // 具体内容
 } InteractionControlBuffer;
 
-typedef struct MoudleControl_s // 车体模块控制发送数据
+typedef struct ModuleControl_s // 车体模块控制发送数据
 {
   int type; // 类型  0：无  1：小陀螺  2：左小云台单连发控制
             // 3：右小云台单连发控制
   int content; // 具体内容
-} MoudleControlBuffer;
+} ModuleControlBuffer;
 
-typedef struct ShootStautsControl_s // 发射状态量发送数据
+typedef struct ShootStatusControl_s // 发射状态量发送数据
 {
   int real_heat;                        //发射机构热量
-  int bullet_speed :                    //左弹速
+  int bullet_speed ;                    //左弹速
                      int game_progress; //比赛阶段
-} ShootStautsBuffer;
+} ShootStatusBuffer;
 
 // 下位机发上位机
 typedef struct GyroFeedback_s // 陀螺仪信息反馈接收数据

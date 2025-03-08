@@ -49,7 +49,7 @@ public:
    * @param type 消息类型
    * @param buffer 数据
    */
-  template <typename T> void Send(uint8_t type, T *buffer) {
+  template <typename T> bool Send(uint8_t type, T *buffer) {
     this->datasend.start = 's';
     this->datasend.end = 'e';
     this->datasend.type = type;
@@ -57,10 +57,11 @@ public:
     auto data = toVector(this->datasend);
     try {
       stm32_serial->port()->send(data);
+      return true;
     } catch (const std::exception &e) {
       std::cout << "!!!!!!!!消息发送失败!!!!!!!!" << std::endl;
       std::cout << e.what() << std::endl;
-      exit(-2);
+      return false;
     }
   }
   /**

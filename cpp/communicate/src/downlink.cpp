@@ -10,8 +10,8 @@ Downlink::Downlink(Uplink* uplink):
     this->MainPTZSubTopic = "/behaviortree/main";
     this->ChassisVelSubTopic = "cmd_vel";
     this->InteractionSubTopic = "/behaviortree/interaction";
-    this->MoudleSubTopic = "/behaviortree/moudle";
-    this->ShootStautsSubTopic = "/communicate/shootstauts";
+    this->ModuleSubTopic = "/behaviortree/module";
+    this->ShootStatusSubTopic = "/communicate/shootstatus";
 
     this->debug = this->declare_parameter("debug", false);
 
@@ -35,10 +35,10 @@ Downlink::Downlink(Uplink* uplink):
         10,
         std::bind(&Downlink::InteractionCB, this, std::placeholders::_1)
     );
-    Moudle_sub = this->create_subscription<std_msgs::msg::Int32MultiArray>(
-        MoudleSubTopic,
+    Module_sub = this->create_subscription<std_msgs::msg::Int32MultiArray>(
+        ModuleSubTopic,
         10,
-        std::bind(&Downlink::MoudleCB, this, std::placeholders::_1)
+        std::bind(&Downlink::ModuleCB, this, std::placeholders::_1)
     );
     // ShootStauts_sub = this->create_subscription<std_msgs::msg::Int32MultiArray>(
     //     ShootStautsSubTopic,
@@ -88,21 +88,21 @@ void Downlink::InteractionCB(const std_msgs::msg::Int32MultiArray::SharedPtr msg
     uplink_->Send(0xA3, &tmp);
 }
 
-void Downlink::MoudleCB(const std_msgs::msg::Int32MultiArray::SharedPtr msg) {
+void Downlink::ModuleCB(const std_msgs::msg::Int32MultiArray::SharedPtr msg) {
     if (this->debug) {
         return;
     }
-    MoudleControlBuffer tmp;
+    ModuleControlBuffer tmp;
     tmp.type = msg->data[0];
     tmp.content = msg->data[1];
     uplink_->Send(0xA4, &tmp);
 }
 
-void Downlink::ShootStautsCB(const std_msgs::msg::Int32MultiArray::SharedPtr msg) {
+void Downlink::ShootStatusCB(const std_msgs::msg::Int32MultiArray::SharedPtr msg) {
     if (this->debug) {
         return;
     }
-    ShootStautsBuffer tmp;
+    ShootStatusBuffer tmp;
     tmp.left_real_heat = msg->data[0];
     tmp.right_real_heat = msg->data[1];
     tmp.left_bullet_speed = msg->data[2];

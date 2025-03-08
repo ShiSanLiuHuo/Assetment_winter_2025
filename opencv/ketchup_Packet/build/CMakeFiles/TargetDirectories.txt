@@ -1,0 +1,3 @@
+/media/wjr/My Passport/学习资料/rm/寒假/寒假任务/ftpd/opencv/ketchup_Packet/build/CMakeFiles/main.dir
+/media/wjr/My Passport/学习资料/rm/寒假/寒假任务/ftpd/opencv/ketchup_Packet/build/CMakeFiles/edit_cache.dir
+/media/wjr/My Passport/学习资料/rm/寒假/寒假任务/ftpd/opencv/ketchup_Packet/build/CMakeFiles/rebuild_cache.dir
